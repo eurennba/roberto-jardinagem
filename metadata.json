@@ -1,0 +1,7 @@
+{
+  "name": "Roberto Jardinagem",
+  "description": "Uma página de vendas moderna e otimizada para serviços de jardinagem, incluindo assistente inteligente integrado com Gemini.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

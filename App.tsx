@@ -1,0 +1,349 @@
+
+import React, { useEffect, useState } from 'react';
+import { 
+  ArrowRight,
+  Menu,
+  X,
+  Leaf,
+  Sun,
+  Moon,
+  MessageCircle,
+  Sparkles,
+  ShieldCheck,
+  Clock,
+  MapPin,
+  Star
+} from 'lucide-react';
+import { BENEFITS, TESTIMONIALS, FAQS, WHATSAPP_LINK } from './constants';
+import BenefitCard from './components/BenefitCard';
+import FAQAccordion from './components/FAQAccordion';
+import GardenAssistant from './components/GardenAssistant';
+
+const App: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('theme');
+    return (saved as 'light' | 'dark') || 'light';
+  });
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const closeMenu = () => setIsMenuOpen(false);
+
+  return (
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-300 selection:bg-green-200 dark:selection:bg-green-900">
+      {/* Navigation */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 dark:bg-stone-950/95 backdrop-blur-md shadow-2xl py-3 border-b border-stone-100 dark:border-stone-800' : 'bg-transparent py-6'}`}>
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            <div className="relative">
+              <div className="absolute -inset-2 bg-green-500 rounded-2xl blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
+              <div className="relative bg-gradient-to-br from-green-500 to-green-700 p-2.5 rounded-2xl text-white shadow-xl transform group-hover:rotate-12 transition-all duration-300">
+                <Leaf size={28} fill="white" />
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black tracking-tighter leading-none text-stone-900 dark:text-white">ROBERTO</span>
+              <span className="text-[10px] font-black tracking-[0.3em] text-green-600 dark:text-green-500 uppercase mt-1">Jardinagem Profissional</span>
+            </div>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-10 font-bold">
+            <div className="flex gap-8 text-sm">
+              <a href="#servicos" className="hover:text-green-600 transition-colors relative group">
+                Serviços
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-600 transition-all group-hover:w-full"></span>
+              </a>
+              <a href="#depoimentos" className="hover:text-green-600 transition-colors relative group">
+                Clientes
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-600 transition-all group-hover:w-full"></span>
+              </a>
+              <a href="#faq" className="hover:text-green-600 transition-colors relative group">
+                Dúvidas
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-600 transition-all group-hover:w-full"></span>
+              </a>
+            </div>
+            
+            <div className="flex items-center gap-4 border-l border-stone-200 dark:border-stone-800 pl-8">
+              <button 
+                onClick={toggleTheme}
+                className="p-3 rounded-2xl bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-amber-400 hover:scale-110 transition-all shadow-inner active:scale-95"
+                aria-label="Alternar tema"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
+              <a 
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-600 text-white px-8 py-4 rounded-2xl hover:bg-green-700 transition-all shadow-xl shadow-green-600/20 active:scale-95 text-sm font-black uppercase tracking-wider"
+              >
+                Orçamento Grátis
+              </a>
+            </div>
+          </div>
+
+          <div className="md:hidden flex items-center gap-3">
+            <button onClick={toggleTheme} className="p-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-amber-400 shadow-sm">
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button className="p-2.5 text-stone-900 dark:text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden absolute top-full left-0 right-0 border-t flex flex-col gap-2 p-8 transition-all duration-500 ease-in-out transform origin-top ${isMenuOpen ? 'opacity-100 scale-y-100 shadow-2xl' : 'opacity-0 scale-y-0 pointer-events-none'} bg-white dark:bg-stone-900 border-stone-100 dark:border-stone-800`}>
+          <a href="#servicos" onClick={closeMenu} className="text-xl font-bold py-4 border-b dark:border-stone-800 flex justify-between items-center text-stone-900 dark:text-white">Serviços <ArrowRight size={18} /></a>
+          <a href="#depoimentos" onClick={closeMenu} className="text-xl font-bold py-4 border-b dark:border-stone-800 flex justify-between items-center text-stone-900 dark:text-white">Clientes <ArrowRight size={18} /></a>
+          <a href="#faq" onClick={closeMenu} className="text-xl font-bold py-4 border-b dark:border-stone-800 flex justify-between items-center text-stone-900 dark:text-white">Dúvidas <ArrowRight size={18} /></a>
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" onClick={closeMenu} className="bg-green-600 text-white text-center py-5 rounded-2xl font-black mt-6 shadow-xl active:scale-95 transition-transform uppercase tracking-widest">Solicitar Orçamento</a>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-10 bg-gradient-to-b from-stone-50/20 dark:from-stone-950/20 via-stone-50/80 dark:via-stone-950/80 to-stone-50 dark:to-stone-950" />
+          <img 
+            src="https://images.unsplash.com/photo-1592150621344-22d50a132a40?q=80&w=2000&auto=format&fit=crop" 
+            className="w-full h-full object-cover animate-slow-zoom" 
+            alt="Gramado perfeito e bem cuidado"
+            loading="eager" 
+          />
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-20">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest mb-10 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md text-green-700 dark:text-green-400 shadow-2xl shadow-green-500/10 border border-green-500/20">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span>Atendimento Prioritário em Hortolândia</span>
+              </div>
+              <h1 className="text-6xl md:text-8xl xl:text-9xl font-black leading-[0.9] mb-10 text-stone-900 dark:text-white tracking-tighter">
+                Seu terreno <span className="text-green-600 inline-block transform -rotate-1">Impecável</span>.
+              </h1>
+              <p className="text-xl md:text-3xl mb-14 leading-relaxed text-stone-800 dark:text-stone-300 font-medium max-w-2xl mx-auto lg:mx-0">
+                Especialista em <span className="text-green-700 dark:text-green-500 font-black">limpeza de terrenos</span>, quintais e o melhor <span className="text-green-700 dark:text-green-500 font-black">plantio de grama</span> da região.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8">
+                <a 
+                  href={WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-4 bg-green-600 text-white px-14 py-7 rounded-[32px] text-2xl font-black hover:bg-green-700 transition-all shadow-3xl shadow-green-600/40 group active:scale-95 w-full sm:w-auto"
+                >
+                  Falar com o Roberto <ArrowRight size={28} className="group-hover:translate-x-3 transition-transform duration-300" />
+                </a>
+                
+                <div className="flex -space-x-4">
+                  {[1, 2, 3, 4].map(i => (
+                    <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-12 h-12 rounded-full border-4 border-white dark:border-stone-900 shadow-lg" alt="Cliente satisfeito" />
+                  ))}
+                  <div className="w-12 h-12 rounded-full bg-stone-100 dark:bg-stone-800 border-4 border-white dark:border-stone-900 flex items-center justify-center text-xs font-black shadow-lg">
+                    +50
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* A Imagem do Roberto em Moldura Elevada */}
+            <div className="flex-1 relative w-full max-w-md lg:max-w-xl">
+              <div className="absolute -inset-4 bg-gradient-to-br from-green-500 to-green-300 rounded-[50px] blur-2xl opacity-20 animate-pulse"></div>
+              <div className="relative bg-white dark:bg-stone-900 p-3 rounded-[45px] shadow-3xl transform rotate-3 hover:rotate-0 transition-all duration-700 cursor-zoom-in border-4 border-white dark:border-stone-800">
+                <div className="relative rounded-[35px] overflow-hidden aspect-[4/5] shadow-inner">
+                  <img 
+                    src="https://images.unsplash.com/photo-1598902108854-10e335adac99?q=80&w=1000&auto=format&fit=crop" 
+                    alt="Serviço de limpeza e jardinagem de alta qualidade" 
+                    className="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-1000"
+                  />
+                  <div className="absolute top-6 right-6 bg-green-600 text-white px-4 py-2 rounded-2xl text-xs font-black shadow-xl flex items-center gap-2">
+                    <Sparkles size={14} /> TRABALHO REALIZADO
+                  </div>
+                </div>
+                
+                <div className="absolute -bottom-8 -left-8 bg-white dark:bg-stone-800 p-6 rounded-[32px] shadow-2xl border border-stone-100 dark:border-stone-700 flex items-center gap-5 max-w-[280px]">
+                  <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-2xl text-green-600">
+                    <ShieldCheck size={32} />
+                  </div>
+                  <div>
+                    <p className="font-black text-stone-900 dark:text-white leading-none mb-1">Serviço Garantido</p>
+                    <p className="text-xs font-bold text-stone-500">Qualidade Roberto Jardinagem</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Trust Badges */}
+      <section className="py-16 border-y border-stone-100 dark:border-stone-900 bg-white dark:bg-stone-900/50">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex flex-col items-center text-center gap-3">
+              <Clock className="text-green-600" size={32} />
+              <p className="font-black text-stone-900 dark:text-white">Rápido Atendimento</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <ShieldCheck className="text-green-600" size={32} />
+              <p className="font-black text-stone-900 dark:text-white">Segurança Total</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <MapPin className="text-green-600" size={32} />
+              <p className="font-black text-stone-900 dark:text-white">Foco na Região</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              <Star className="text-green-600" size={32} />
+              <p className="font-black text-stone-900 dark:text-white">Nota 5 Estrelas</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section id="servicos" className="py-32 bg-white dark:bg-stone-950 relative">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mb-24 text-center mx-auto">
+            <span className="text-green-600 font-black tracking-[0.4em] uppercase text-sm block mb-6">Excelência no que fazemos</span>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mb-8 text-stone-900 dark:text-white">O que o Roberto resolve hoje?</h2>
+            <div className="w-32 h-2.5 bg-green-600 mx-auto rounded-full"></div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {BENEFITS.map(benefit => (
+              <BenefitCard key={benefit.id} benefit={benefit} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="depoimentos" className="py-32 bg-stone-100 dark:bg-stone-900 transition-colors">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-stone-900 dark:text-white">Quem já contratou aprova</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-12">
+            {TESTIMONIALS.map(t => (
+              <div key={t.id} className="p-12 rounded-[50px] bg-white dark:bg-stone-800 shadow-2xl border border-stone-200 dark:border-stone-700 relative group hover:-translate-y-4 transition-all duration-500">
+                <div className="absolute -top-6 -right-6 bg-green-600 text-white p-4 rounded-3xl shadow-xl">
+                  <Star size={24} fill="white" />
+                </div>
+                <p className="text-xl font-bold leading-relaxed mb-10 text-stone-700 dark:text-stone-200 italic">"{t.content}"</p>
+                <div className="flex items-center gap-6">
+                  <img src={t.avatar} className="w-20 h-20 rounded-[28px] border-4 border-green-500 shadow-lg object-cover" alt={t.name} loading="lazy" />
+                  <div>
+                    <p className="font-black text-2xl text-stone-900 dark:text-white">{t.name}</p>
+                    <p className="text-sm font-black text-green-600 uppercase tracking-widest">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-32 bg-white dark:bg-stone-950">
+        <div className="container mx-auto px-6">
+          <h2 className="text-5xl md:text-7xl font-black text-center mb-24 tracking-tighter text-stone-900 dark:text-white">Tire suas dúvidas</h2>
+          <FAQAccordion items={FAQS} theme={theme} />
+        </div>
+      </section>
+
+      {/* CTA Section Final */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
+          <div className="bg-stone-900 dark:bg-green-900/20 rounded-[60px] p-12 md:p-24 text-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/leaf.png')]"></div>
+            <h2 className="text-5xl md:text-8xl font-black text-white mb-10 relative z-10 leading-none">Pronto para ver seu terreno brilhando?</h2>
+            <a 
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-4 bg-green-600 text-white px-16 py-8 rounded-full text-3xl font-black hover:bg-green-700 transition-all shadow-3xl active:scale-95 relative z-10"
+            >
+              CHAMAR AGORA <ArrowRight size={36} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="pt-32 pb-16 bg-white dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800">
+        <div className="container mx-auto px-6 text-center">
+            <div className="flex flex-col items-center mb-16">
+                <div className="bg-green-600 p-5 rounded-3xl text-white shadow-2xl mb-8 transform hover:rotate-12 transition-transform">
+                  <Leaf size={40} fill="white" />
+                </div>
+                <h3 className="text-4xl font-black tracking-tighter mb-4 text-stone-900 dark:text-white">Roberto Jardinagem</h3>
+                <p className="text-stone-500 dark:text-stone-400 text-xl font-bold max-w-md">O melhor serviço de limpeza e plantio de Hortolândia e região.</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-12 mb-20 text-stone-800 dark:text-stone-200 font-black uppercase tracking-widest text-sm">
+                <a href="#servicos" className="hover:text-green-600 transition-colors">Serviços</a>
+                <a href="#depoimentos" className="hover:text-green-600 transition-colors">Clientes</a>
+                <a href="#faq" className="hover:text-green-600 transition-colors">Dúvidas</a>
+                <a href={WHATSAPP_LINK} className="text-green-600 hover:scale-105 transition-transform">(19) 97122-4392</a>
+            </div>
+          <div className="text-center text-stone-400 font-bold text-xs border-t border-stone-100 dark:border-stone-800 pt-16">
+            <p>© {new Date().getFullYear()} - Roberto Jardinagem Profissional. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Botão WhatsApp Compacto */}
+      <a 
+        href={WHATSAPP_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-8 right-8 z-50 group flex flex-col items-end"
+        aria-label="Falar com Roberto no WhatsApp"
+      >
+        <span className="mb-3 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 px-4 py-2 rounded-xl font-black shadow-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 border border-stone-100 dark:border-stone-700 pointer-events-none text-xs whitespace-nowrap">
+          Falar agora 👋
+        </span>
+        <div className="relative">
+            <div className="absolute -inset-3 bg-[#25D366] rounded-full blur-xl opacity-20 group-hover:opacity-50 animate-pulse transition-opacity duration-1000"></div>
+            <div className="bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white p-3.5 rounded-2xl shadow-2xl whatsapp-pulse active:scale-90 transition-all hover:scale-110 relative z-10 flex items-center justify-center">
+              <MessageCircle size={24} fill="white" strokeWidth={1.5} />
+              
+              <span className="absolute -top-1 -right-1 flex h-5 w-5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-5 w-5 bg-red-600 items-center justify-center text-[9px] font-black text-white border-2 border-white dark:border-stone-900">
+                  1
+                </span>
+              </span>
+            </div>
+        </div>
+      </a>
+
+      <GardenAssistant currentTheme={theme} />
+    </div>
+  );
+};
+
+export default App;
