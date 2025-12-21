@@ -7,28 +7,28 @@ export const BENEFITS: Benefit[] = [
     title: "Limpeza de Calçadas e Quintais",
     description: "Remoção de lodo, mato e sujeira pesada. Deixamos sua área externa renovada e segura.",
     icon: "Sparkles",
-    imageUrl: "" // Imagem removida conforme solicitação
+    imageUrl: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=400&auto=format&fit=crop"
   },
   {
     id: 2,
     title: "Terrenos e Lotes",
     description: "Roçagem profissional e limpeza completa de lotes urbanos ou rurais com descarte correto.",
     icon: "Layout",
-    imageUrl: ""
+    imageUrl: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?q=80&w=400&auto=format&fit=crop"
   },
   {
     id: 3,
     title: "Plantio de Gramas",
     description: "Preparação do solo e plantio de gramas Esmeralda, São Carlos ou Bermudas com garantia de pegamento.",
     icon: "Sprout",
-    imageUrl: ""
+    imageUrl: "https://images.unsplash.com/photo-1592150621344-22d50a132a40?q=80&w=400&auto=format&fit=crop"
   },
   {
     id: 4,
     title: "Manutenção Geral",
     description: "Poda de árvores, arbustos e cuidados mensais para manter seu espaço sempre organizado.",
     icon: "Scissors",
-    imageUrl: ""
+    imageUrl: "https://images.unsplash.com/photo-1557429287-b2e26467fc2b?q=80&w=400&auto=format&fit=crop"
   }
 ];
 
@@ -38,21 +38,21 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Mariana Silva",
     role: "Proprietária de Residência",
     content: "O Roberto limpou meu quintal e plantou grama nova. O resultado foi surpreendente, muito caprichoso!",
-    avatar: "https://picsum.photos/seed/mariana/100/100"
+    avatar: "https://i.pravatar.cc/150?u=mariana"
   },
   {
     id: 2,
     name: "Carlos Eduardo",
     role: "Proprietário de Lote",
     content: "Excelente serviço de limpeza de terreno. Preço justo e equipe muito rápida. Recomendo.",
-    avatar: "https://picsum.photos/seed/carlos/100/100"
+    avatar: "https://i.pravatar.cc/150?u=carlos"
   },
   {
     id: 3,
     name: "Beatriz Costa",
     role: "Arquiteta",
     content: "Sempre chamo o Roberto para o plantio de grama nos meus projetos. Trabalho técnico e impecável.",
-    avatar: "https://picsum.photos/seed/beatriz/100/100"
+    avatar: "https://i.pravatar.cc/150?u=beatriz"
   }
 ];
 
