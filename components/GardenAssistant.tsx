@@ -59,9 +59,15 @@ const GardenAssistant: React.FC<GardenAssistantProps> = ({ currentTheme = 'light
       }`}>
         <div className="bg-green-700 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-3">
-            <Bot size={28} aria-hidden="true" />
+            <div className="relative">
+                <Bot size={28} aria-hidden="true" />
+                <span className="absolute -bottom-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-400 border-2 border-green-700"></span>
+                </span>
+            </div>
             <div>
-                <p className="font-black leading-none">Bio-Assistente</p>
+                <p className="font-black leading-none text-sm uppercase tracking-tight">Bio-Assistente</p>
                 <p className="text-[10px] opacity-70 uppercase tracking-widest font-bold">Roberto Jardinagem</p>
             </div>
           </div>
@@ -82,13 +88,20 @@ const GardenAssistant: React.FC<GardenAssistantProps> = ({ currentTheme = 'light
           aria-live="polite"
         >
           {messages.map((m, i) => (
-            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[90%] p-4 rounded-3xl text-sm leading-relaxed transition-colors ${
+            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start items-end gap-2'}`}>
+              {m.role === 'model' && (
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${
+                  isDark ? 'bg-stone-900 border-stone-800 text-green-500' : 'bg-white border-stone-200 text-green-600'
+                } shadow-sm mb-1`}>
+                  <Bot size={16} />
+                </div>
+              )}
+              <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed transition-colors ${
                 m.role === 'user' 
                   ? 'bg-green-600 text-white rounded-tr-none shadow-xl' 
                   : isDark 
-                    ? 'bg-stone-800 text-stone-200 border border-stone-700 rounded-tl-none shadow-sm'
-                    : 'bg-white text-stone-700 border border-stone-100 rounded-tl-none shadow-sm'
+                    ? 'bg-stone-800 text-stone-200 border border-stone-700 rounded-bl-none shadow-sm'
+                    : 'bg-white text-stone-700 border border-stone-100 rounded-bl-none shadow-sm'
               }`}>
                 {m.text}
                 {m.role === 'model' && i > 0 && (
@@ -105,10 +118,24 @@ const GardenAssistant: React.FC<GardenAssistantProps> = ({ currentTheme = 'light
             </div>
           ))}
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="flex items-center gap-3 p-4">
-                <Loader2 size={18} className="animate-spin text-green-600" aria-hidden="true" />
-                <span className="text-xs font-bold text-stone-400">Analisando jardim...</span>
+            <div className="flex justify-start items-end gap-2">
+              <div className="relative">
+                <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${
+                  isDark ? 'bg-stone-900 border-stone-800 text-green-500' : 'bg-white border-stone-200 text-green-600'
+                } shadow-sm mb-1`}>
+                  <Bot size={16} />
+                </div>
+                {/* Indicador de digitação pulsante */}
+                <span className="absolute bottom-1 right-0 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                </span>
+              </div>
+              <div className={`p-4 rounded-3xl rounded-bl-none text-xs font-bold transition-colors ${
+                isDark ? 'bg-stone-800 text-stone-500 border border-stone-700' : 'bg-white text-stone-400 border border-stone-100'
+              } shadow-sm flex items-center gap-2 italic`}>
+                <Loader2 size={12} className="animate-spin" aria-hidden="true" />
+                Digitando...
               </div>
             </div>
           )}
@@ -121,7 +148,7 @@ const GardenAssistant: React.FC<GardenAssistantProps> = ({ currentTheme = 'light
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Minha murta está amarela..."
+              placeholder="Sua dúvida sobre jardim..."
               aria-label="Digite sua dúvida sobre plantas"
               className={`flex-1 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors ${
                 isDark ? 'bg-stone-800 text-white placeholder-stone-500 border-stone-700' : 'bg-stone-100 text-stone-900 border-transparent'
